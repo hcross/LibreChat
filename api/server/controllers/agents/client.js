@@ -258,7 +258,7 @@ class AgentClient extends BaseClient {
    * `AgentClient` is not opinionated about vision requests, so we don't do anything here
    * @param {MongoFile[]} attachments
    */
-  checkVisionRequest() {}
+  checkVisionRequest() { }
 
   getSaveOptions() {
     // TODO:
@@ -1026,6 +1026,16 @@ class AgentClient extends BaseClient {
         '[api/server/controllers/agents/client.js #sendCompletion] Operation aborted',
         err,
       );
+      // Unconditional debug logging
+      logger.error('[DBG] Error Object Keys:', Object.keys(err));
+      logger.error('[DBG] Full Error Details:', JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
+
+      if (err?.response) {
+        logger.error('[DBG] Error Response Data:', JSON.stringify(err.response.data, null, 2));
+        logger.error('[DBG] Error Request Config:', JSON.stringify(err.response.config, null, 2));
+      } else {
+        logger.error('[DBG] No response object found in error');
+      }
       if (!abortController.signal.aborted) {
         logger.error(
           '[api/server/controllers/agents/client.js #sendCompletion] Unhandled error type',

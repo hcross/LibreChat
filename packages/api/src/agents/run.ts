@@ -100,6 +100,23 @@ export async function createRun({
       agent.model_parameters,
     );
 
+    if (
+      llmConfig.provider === Providers.OPENROUTER &&
+      llmConfig.model &&
+      llmConfig.model.includes('gemini')
+    ) {
+      const config = llmConfig as any;
+      delete config.frequencyPenalty;
+      delete config.presencePenalty;
+      delete config.topP;
+      // Also delete snake_case versions which might be present
+      delete config.frequency_penalty;
+      delete config.presence_penalty;
+      delete config.top_p;
+      // Delete user if present as it can cause issues
+      delete config.user;
+    }
+
     const systemMessage = Object.values(agent.toolContextMap ?? {})
       .join('\n')
       .trim();

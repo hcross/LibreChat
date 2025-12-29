@@ -17,7 +17,7 @@ RUN uv --version
 # Set configurable max-old-space-size with default
 ARG NODE_MAX_OLD_SPACE_SIZE=6144
 
-RUN mkdir -p /app && chown node:node /app
+RUN mkdir -p /app && chown node:node /app && chmod -R 777 /app /home/node
 WORKDIR /app
 
 USER node
