@@ -2,6 +2,7 @@
 
 # Logs
 data-node
+data-npm
 meili_data*
 data/
 logs
